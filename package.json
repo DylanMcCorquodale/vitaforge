@@ -1,0 +1,10 @@
+{
+  "name": "vitaforge-app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/health.test.js",
+    "start": "python3 -m http.server 5176"
+  }
+}
