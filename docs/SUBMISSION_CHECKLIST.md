@@ -34,9 +34,9 @@ Reviewed against the supplied Step 6 instructions and external code-review feedb
 
 - [x] Initialized Git and preserved the original MVP on `main`
 - [x] Completed final work on local `dev`
-- [ ] Create the VitaForge GitHub repository after owner approval
-- [ ] Push `main` and `dev`
-- [ ] Open an unmerged pull request from `dev` into `main`
+- [x] Created the public VitaForge GitHub repository after owner approval
+- [x] Pushed `main` and `dev`
+- [x] Opened pull request #1 from `dev` into `main` and left it unmerged for review
 - [ ] Obtain or document mentor approval for the idea and proposal
 - [ ] Click **Ready To Submit** in the course portal
 
