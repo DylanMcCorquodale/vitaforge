@@ -47,7 +47,7 @@ assert.equal(insights.correlations.length, 3);
 
 const formLog = createLogFromForm({
   date: "2026-06-23",
-  mood: 11,
+  mood: 10,
   energy: 7,
   productivity: 8,
   sleepHours: 7.5,
@@ -62,5 +62,10 @@ const formLog = createLogFromForm({
 assert.equal(formLog.mood, 10);
 assert.equal(formLog.notes, "Good focus.");
 assert.equal(searchCatalog(foodCatalog, "chicken")[0].name, "Chicken breast bowl");
+
+assert.throws(
+  () => createLogFromForm({ ...formLog, mood: "not-a-number" }),
+  /finite number/
+);
 
 console.log("All VitaForge health tests passed.");

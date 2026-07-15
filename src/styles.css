@@ -28,7 +28,7 @@ body {
     var(--bg);
 }
 
-#root {
+.app-shell {
   min-height: 100vh;
   display: grid;
   grid-template-columns: 260px 1fr;
@@ -471,7 +471,7 @@ textarea {
 }
 
 @media (max-width: 1100px) {
-  #root,
+  .app-shell,
   .hero,
   .grid,
   .api-grid,

@@ -11,59 +11,60 @@ erDiagram
       text id PK
       text name
       text email UK
-      text password_hash
-      text password_salt
-      text created_at
+      text passwordHash
+      text passwordSalt
+      date createdAt
     }
     SESSION {
-      text token PK
-      text user_id FK
-      text expires_at
+      text tokenHash UK
+      text userId FK
+      date createdAt
+      date expiresAt
     }
     DAILY_LOG {
       text id PK
-      text user_id FK
+      text userId FK
       text date
       integer mood
       integer energy
       integer productivity
-      real sleep_hours
-      integer water_cups
-      integer workout_minutes
-      text workout_intensity
+      real sleepHours
+      integer waterCups
+      integer workoutMinutes
+      text workoutIntensity
       integer calories
       integer protein
       text notes
-      text created_at
-      text updated_at
+      date createdAt
+      date updatedAt
     }
 ```
 
-## Model responsibilities
+## Collection responsibilities
 
-| Model | Purpose | Main rules |
+| Collection | Purpose | Main rules |
 | --- | --- | --- |
-| `users` | Account identity and credential verifier | Email is unique. Passwords are stored as salted `scrypt` hashes, never plain text. |
-| `sessions` | Revocable authenticated access | Tokens are random, belong to one user, and expire after seven days. |
-| `daily_logs` | One combined wellness observation per day | A user may have only one log per date. Scores are 1-10 and non-score measurements cannot be negative. |
+| `users` | Account identity and credential verifier | A unique index protects email. Passwords are salted `scrypt` hashes. |
+| `sessions` | Revocable authenticated access | Only the token hash is stored. A TTL index removes expired sessions. |
+| `dailyLogs` | One combined wellness observation per day | A unique compound index on `(userId, date)` permits one daily log per user. |
 
 ## Relationships and constraints
 
 - One user can have many sessions and daily logs.
-- Sessions and logs are deleted when their owning user is deleted.
-- The `(user_id, date)` pair is unique.
-- The database indexes user/date lookups and session expiration.
+- Account cleanup explicitly removes sessions and logs belonging to the user.
+- The `(userId, date)` pair is unique.
+- MongoDB indexes email, hashed tokens, session expiration, and user/date log queries.
 - Every read, update, and delete query includes the authenticated user ID to prevent cross-account access.
 
-## Local and deployed representations
+## Concurrency and correctness
 
-The local SQLite schema enforces foreign keys, uniqueness, ranges, and indexes. Netlify Blobs stores equivalent user, session, and log resources as JSON because it is a document store. The deployed API enforces ownership and uniqueness before writes.
+Each user, session, and daily log is a separate MongoDB document. Inserts and updates target one document rather than replacing a shared application-state object. Unique indexes remain authoritative under concurrent requests, preventing duplicate accounts and duplicate logs for the same user/date. This removes the lost-update race that a read-entire-state/write-entire-state Blob design would create.
 
 ## Design decisions
 
 - A combined daily log keeps the primary workflow fast and makes correlation calculations straightforward.
 - Food and exercise catalog results are reference data, not user-owned tables. A production integration could add normalized food, meal, exercise, and workout tables.
-- Bearer sessions are used for the capstone API. A production browser application should prefer secure, HTTP-only, same-site cookies.
+- Bearer sessions are used for the capstone API; MongoDB stores only their hashes. A production browser application should prefer secure, HTTP-only, same-site cookies.
 - Correlations are calculated from daily logs rather than stored, preventing stale insight records.
 
 ## Future model extensions

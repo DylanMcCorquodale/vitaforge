@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useMemo, useState } from "react";
 import { api, getToken, setToken } from "./api.js";
 import {
@@ -285,7 +287,7 @@ function App() {
   ];
 
   return (
-    <>
+    <div className="app-shell">
       <aside className="sidebar">
         <div>
           <div className="brand"><div className="mark">VF</div><div><h1>VitaForge</h1><p>Real-life gains dashboard</p></div></div>
@@ -358,7 +360,7 @@ function App() {
           <article className="panel"><div className="section-head"><div><p className="eyebrow">Exercise API adapter</p><h3>Movement lookup</h3></div></div><input value={exerciseQuery} onChange={(e) => setExerciseQuery(e.target.value)} placeholder="Search exercises, e.g. run" /><div className="catalog">{exercises.map((exercise) => <button className="catalog-item" key={exercise.name} type="button" onClick={() => setForm({ ...form, workoutMinutes: exercise.minutes, workoutIntensity: exercise.intensity })}><strong>{exercise.name}</strong><span>{exercise.type} · {exercise.minutes} min · {exercise.intensity}</span></button>)}</div></article>
         </section>
       </main>
-    </>
+    </div>
   );
 }
 

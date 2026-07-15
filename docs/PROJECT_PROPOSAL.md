@@ -29,16 +29,16 @@ Many wellness tools isolate one category, such as workouts, food, or sleep. That
 
 ## Data strategy
 
-VitaForge provides its own account, session, and daily-log API. SQLite supplies relational persistence locally. Netlify Blobs provides a small deployed data store behind the same REST contract. Food and exercise search endpoints currently normalize curated demonstration catalogs; production adapters could call USDA FoodData Central and ExerciseDB or API Ninjas.
+VitaForge provides its own account, session, and daily-log API through Next.js route handlers. MongoDB stores users, hashed sessions, and daily logs as separate documents. Unique indexes enforce email and user/date uniqueness, while atomic document operations prevent lost updates. Food and exercise search endpoints currently normalize curated demonstration catalogs; production adapters could call USDA FoodData Central and ExerciseDB or API Ninjas.
 
 ## Technology
 
-- React and Vite frontend
-- Node.js REST API
-- SQLite local database
-- Netlify Functions and Netlify Blobs deployment
+- Next.js App Router and React frontend
+- Next.js REST-style route handlers
+- MongoDB and MongoDB Atlas
+- Vercel deployment
 - Salted `scrypt` password hashes and random bearer sessions
-- Automated domain and database tests
+- Automated domain, validation, authentication, and MongoDB integration tests
 
 ## MVP features
 
@@ -60,6 +60,6 @@ VitaForge records user-entered wellness observations. It does not diagnose condi
 - Users can register, authenticate, and access only their own records.
 - All daily-log CRUD operations work through the API.
 - Dashboard insights update after data changes.
-- Automated health and database tests pass.
+- Automated health, authentication, validation, and MongoDB integration tests pass.
 - The production build succeeds and the deployed health endpoint responds.
 - The repository contains the required planning, model, API, README, and submission documents.

@@ -1,3 +1,5 @@
+import { finiteNumber, validateDailyLog } from "./validation.js";
+
 export const sampleLogs = [
   {
     date: "2026-06-17",
@@ -96,7 +98,7 @@ export const exerciseCatalog = [
 ];
 
 export function clampScore(value) {
-  return Math.max(1, Math.min(10, Number(value)));
+  return finiteNumber(value, "Score", { min: 1, max: 10 });
 }
 
 export function average(values) {
@@ -227,19 +229,7 @@ export function buildInsights(logs) {
 }
 
 export function createLogFromForm(formValues) {
-  return {
-    date: formValues.date,
-    mood: clampScore(formValues.mood),
-    energy: clampScore(formValues.energy),
-    productivity: clampScore(formValues.productivity),
-    sleepHours: Math.max(0, Number(formValues.sleepHours)),
-    waterCups: Math.max(0, Number(formValues.waterCups)),
-    workoutMinutes: Math.max(0, Number(formValues.workoutMinutes)),
-    workoutIntensity: formValues.workoutIntensity,
-    calories: Math.max(0, Number(formValues.calories)),
-    protein: Math.max(0, Number(formValues.protein)),
-    notes: formValues.notes?.trim() || "No notes yet."
-  };
+  return validateDailyLog(formValues);
 }
 
 export function searchCatalog(items, query) {

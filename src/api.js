@@ -1,10 +1,12 @@
 const tokenKey = "vitaforge.session.v1";
 
 export function getToken() {
+  if (typeof window === "undefined" || !window.localStorage) return "";
   return localStorage.getItem(tokenKey) || "";
 }
 
 export function setToken(token) {
+  if (typeof window === "undefined" || !window.localStorage) return;
   if (token) localStorage.setItem(tokenKey, token);
   else localStorage.removeItem(tokenKey);
 }

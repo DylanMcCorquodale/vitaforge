@@ -6,27 +6,28 @@ The application turns daily self-reported habits into an explainable wellness sc
 
 ## Features
 
-- Account registration and login with salted password hashing
-- Seven-day session tokens and protected user data
-- Create, read, update, and delete daily wellness logs
-- Persistent SQLite storage during local development
-- Netlify Function and Netlify Blobs persistence when deployed
+- Next.js App Router interface and API route handlers
+- Account registration and login with salted `scrypt` password hashing
+- Hashed, expiring, revocable session tokens
+- Authenticated create, read, update, and delete operations for daily logs
+- MongoDB collections with atomic per-record writes
+- Unique email and `(userId, date)` indexes that prevent concurrency-related duplicates
+- Strict validation that rejects missing, malformed, `NaN`, infinite, and out-of-range values
 - Average mood, energy, productivity, sleep, protein, and streak metrics
 - Wellness timeline with editable entries
 - Correlations for workout-to-mood, sleep-to-energy, and protein-to-productivity
-- Explainable recommendation cards
-- API-backed food and exercise catalog searches
-- Responsive React interface with an unauthenticated sample-data preview
-- Unit and database integration tests
+- Food and exercise search adapters
+- Responsive React UI with an unauthenticated sample-data preview
+- Unit, authentication, validation, and optional live-MongoDB integration tests
 
 ## Technology
 
-- React and Vite
-- Node.js REST API
-- SQLite using Node's built-in database module
-- Netlify Functions and Netlify Blobs for deployed persistence
-- Node crypto (`scrypt`) for password hashing and random session tokens
-- CSS with responsive desktop and mobile layouts
+- Next.js 16 App Router and React 19
+- Next.js route handlers for the REST API
+- MongoDB Node.js driver 7.5
+- MongoDB Atlas-compatible persistence
+- Node crypto for password and session security
+- Responsive CSS
 
 ## Capstone Documentation
 
@@ -39,29 +40,38 @@ The application turns daily self-reported habits into an explainable wellness sc
 
 ## Project Structure
 
-- `src/App.jsx`: React UI, authentication flow, dashboard state, and CRUD interactions
-- `src/health.js`: wellness scoring, correlations, search catalogs, and input normalization
-- `src/api.js`: authenticated API client
-- `server/database.js`: SQLite schema, authentication, sessions, and log operations
-- `server/server.js`: local REST API and production-build server
-- `netlify/functions/api.mjs`: deployed REST API using Netlify Blobs
-- `tests/health.test.js`: health-domain unit tests
-- `tests/database.test.js`: authentication and database integration tests
+- `app/page.jsx`: main Next.js page
+- `app/api/**/route.js`: API route handlers
+- `src/App.jsx`: authenticated React dashboard and CRUD interactions
+- `src/health.js`: wellness scoring, correlations, streaks, and searches
+- `src/validation.js`: strict daily-log validation
+- `lib/mongodb.js`: pooled MongoDB connection and index creation
+- `lib/repository.js`: atomic account, session, and daily-log operations
+- `lib/auth.js`: password hashing, token hashing, and credential validation
+- `tests/`: domain, security, validation, and MongoDB integration tests
 
-## Running Locally
+## Local Setup
 
-Install dependencies, build the React application, and start the API server:
+1. Copy `.env.example` to `.env.local`.
+2. Replace `MONGODB_URI` with a MongoDB Atlas or local MongoDB connection string.
+3. Install, test, and run:
 
 ```bash
 npm install
 npm test
+npm run dev
+```
+
+Open `http://localhost:3000`.
+
+`npm test` always runs the health, authentication, and validation suites. The MongoDB integration suite runs automatically when `.env.local` contains `MONGODB_URI`; otherwise it reports a clear skip.
+
+Production check:
+
+```bash
 npm run build
 npm start
 ```
-
-Open `http://localhost:5177`.
-
-For frontend development, run `npm run dev` in one terminal and `npm start` in another. Vite runs at `http://localhost:5176` and proxies `/api` requests to the local API.
 
 ## API Routes
 
@@ -82,14 +92,19 @@ GET    /api/exercises/search?q=run
 
 Protected routes require `Authorization: Bearer <token>`.
 
+## Concurrency and Data Integrity
+
+VitaForge does not store the whole application in one shared document. Users, sessions, and daily logs are separate MongoDB documents. Creating a user or log is an atomic insert, updates target one owned document, and unique indexes enforce email and per-day uniqueness even when requests arrive concurrently. MongoDB's TTL index removes expired sessions.
+
 ## Security and Privacy Scope
 
-- Passwords are never stored directly; local and deployed APIs store a salted `scrypt` hash.
-- Daily logs are scoped to the authenticated user.
-- Session tokens expire after seven days and can be revoked through logout.
-- Production hardening would add verified email ownership, password reset, rate limiting, secure cookies, audit logging, data export/deletion, and a formal privacy review.
-- Wellness insights describe correlations in the user's entries and do not make diagnoses.
+- Passwords are stored only as salted `scrypt` hashes.
+- Raw session tokens are returned to the client once; MongoDB stores only their SHA-256 hashes.
+- Every log operation includes the authenticated `userId`.
+- Input validation rejects non-finite and out-of-range values before persistence.
+- A larger public release should add verified email ownership, password reset, login rate limiting, secure HTTP-only cookies, audit logs, and formal privacy controls.
+- Wellness insights describe correlations and do not make diagnoses.
 
 ## Portfolio Explanation
 
-> VitaForge is a React and Node full-stack capstone that connects daily wellness habits with mood, energy, and productivity. I built account authentication, protected CRUD APIs, SQLite persistence, deployed Blob storage, automated tests, responsive UI, and an explainable correlation engine. The product deliberately presents patterns as personal observations rather than medical conclusions.
+> VitaForge is a Next.js and MongoDB full-stack capstone that connects daily wellness habits with mood, energy, and productivity. I built authentication, protected CRUD route handlers, atomic MongoDB persistence, strict validation, automated tests, responsive UI, and an explainable correlation engine. The product deliberately presents patterns as personal observations rather than medical conclusions.

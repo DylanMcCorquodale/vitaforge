@@ -2,7 +2,7 @@
 
 ## Overview
 
-VitaForge uses a REST-style JSON API. Local development uses Node and SQLite; the deployed Netlify Function exposes the same route contract using Netlify Blobs. Protected routes require an `Authorization: Bearer <token>` header.
+VitaForge uses Next.js App Router route handlers to expose a REST-style JSON API backed by MongoDB. Protected routes require an `Authorization: Bearer <token>` header. MongoDB stores only a SHA-256 hash of each raw session token.
 
 ## Endpoints
 

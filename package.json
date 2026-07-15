@@ -4,18 +4,18 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "test": "node tests/health.test.js && node tests/database.test.js",
-    "start": "node server/server.js"
+    "dev": "next dev",
+    "build": "next build",
+    "test": "node tests/health.test.js && node tests/auth-validation.test.js && node --env-file-if-exists=.env.local tests/mongodb.integration.test.js",
+    "start": "next start"
   },
   "dependencies": {
-    "@netlify/blobs": "^10.7.9",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "mongodb": "7.5.0",
+    "next": "16.2.10",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
   },
-  "devDependencies": {
-    "@vitejs/plugin-react": "^4.7.0",
-    "vite": "^7.0.6"
+  "overrides": {
+    "postcss": "8.5.10"
   }
 }

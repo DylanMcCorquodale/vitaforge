@@ -1,25 +1,44 @@
 # Deploying VitaForge
 
-## Netlify
+## Prerequisites
 
-The repository includes `netlify.toml`. Netlify should detect these settings:
+- A MongoDB Atlas database or another reachable MongoDB deployment
+- A Vercel account connected to GitHub
+- The VitaForge GitHub repository
 
-- Build command: `npm run build`
-- Publish directory: `dist`
-- Functions directory: `netlify/functions`
+## MongoDB Atlas
 
-Requests to `/api/*` are redirected to the VitaForge Netlify Function. The function stores users, sessions, and daily logs in the `vitaforge-live-data` Blob store.
+1. Create a free Atlas cluster.
+2. Create a database user with a strong unique password.
+3. Configure network access for the deployment environment.
+4. Copy the application connection string.
+5. Do not commit the connection string or password.
+
+## Vercel
+
+1. Import the VitaForge GitHub repository.
+2. Keep the detected Next.js framework settings.
+3. Add these encrypted environment variables:
+
+```text
+MONGODB_URI=<Atlas connection string>
+MONGODB_DB=vitaforge
+```
+
+4. Deploy from `dev` for review or from the approved production branch.
 
 ## Verification
 
 After deployment, verify:
 
-1. `/` loads the React application.
-2. `/api/health` returns `{ "ok": true, "database": "netlify-blobs" }`.
-3. A new user can register and receives six sample logs.
-4. The user can add, edit, and delete a daily log.
-5. Signing out prevents access to protected logs.
-6. Food and exercise searches return results.
+1. `/` loads the Next.js application.
+2. `/api/health` reports `{ "ok": true, "database": "mongodb" }`.
+3. A new account receives six sample daily logs.
+4. A user can add, edit, and delete a log.
+5. Duplicate emails and duplicate user/date logs are rejected.
+6. Signing out revokes the session.
+7. A request using the revoked token receives `401`.
+8. Food and exercise searches return normalized results.
 
 ## Local Production Check
 
@@ -29,4 +48,4 @@ npm run build
 npm start
 ```
 
-Then open `http://localhost:5177`.
+Open `http://localhost:3000`.
