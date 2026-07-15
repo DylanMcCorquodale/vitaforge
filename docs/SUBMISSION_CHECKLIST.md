@@ -17,7 +17,8 @@ Reviewed against the supplied Step 6 instructions and external code-review feedb
 - [x] Confirmed `npm test` passes without a configured database
 - [x] Confirmed `npm run build` succeeds with all Next.js routes
 - [x] Confirmed `npm audit --omit=dev` reports zero vulnerabilities
-- [ ] Run the live MongoDB integration suite with `MONGODB_URI`
+- [x] Ran the live MongoDB integration suite against MongoDB 8.0.20 on July 14, 2026
+- [x] Verified the production app and `/api/health` endpoint return HTTP 200 with MongoDB connected
 - [ ] Deploy and verify the live application and MongoDB API
 
 ## Required documentation
@@ -41,4 +42,4 @@ Reviewed against the supplied Step 6 instructions and external code-review feedb
 
 ## Remaining external requirements
 
-The implementation now matches the requested Next.js, React, and MongoDB stack. Live database verification and deployment require a MongoDB connection string. Public GitHub publishing and deployment remain intentionally paused until the project owner reviews and approves the package.
+The implementation now matches the requested Next.js, React, and MongoDB stack, and has been verified against a live local MongoDB 8.0.20 database. Public deployment still requires a hosted MongoDB connection string. Public GitHub publishing and deployment remain intentionally paused until the project owner reviews and approves the package.
