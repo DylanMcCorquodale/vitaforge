@@ -1,5 +1,7 @@
 # Deploying VitaForge
 
+VitaForge supports both the MongoDB Compass workflow used for local development and MongoDB Atlas for a publicly reachable deployment. Compass connects to a MongoDB server; it does not host the database for Vercel.
+
 ## Prerequisites
 
 - A MongoDB Atlas database or another reachable MongoDB deployment
@@ -41,6 +43,13 @@ After deployment, verify:
 8. Food and exercise searches return normalized results.
 
 ## Local Production Check
+
+With a local MongoDB server running, connect Compass to `mongodb://127.0.0.1:27017` and set `.env.local` to:
+
+```text
+MONGODB_URI=mongodb://127.0.0.1:27017/?directConnection=true
+MONGODB_DB=vitaforge
+```
 
 ```bash
 npm test

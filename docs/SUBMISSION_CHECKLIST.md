@@ -17,7 +17,7 @@ Reviewed against the supplied Step 6 instructions and external code-review feedb
 - [x] Confirmed `npm test` passes without a configured database
 - [x] Confirmed `npm run build` succeeds with all Next.js routes
 - [x] Confirmed `npm audit --omit=dev` reports zero vulnerabilities
-- [x] Ran the live MongoDB integration suite against MongoDB 8.0.20 on July 14, 2026
+- [x] Ran the live MongoDB integration suite against MongoDB 8.0.20 using the local Compass workflow on July 14, 2026
 - [x] Verified the production app and `/api/health` endpoint return HTTP 200 with MongoDB connected
 - [ ] Deploy and verify the live application and MongoDB API
 

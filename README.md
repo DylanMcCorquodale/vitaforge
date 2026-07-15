@@ -66,6 +66,17 @@ Open `http://localhost:3000`.
 
 `npm test` always runs the health, authentication, and validation suites. The MongoDB integration suite runs automatically when `.env.local` contains `MONGODB_URI`; otherwise it reports a clear skip.
 
+### MongoDB Compass workflow
+
+For the local workflow taught in Springboard, start the MongoDB server and connect MongoDB Compass to `mongodb://127.0.0.1:27017`. Use this local configuration in `.env.local`:
+
+```text
+MONGODB_URI=mongodb://127.0.0.1:27017/?directConnection=true
+MONGODB_DB=vitaforge
+```
+
+Compass is the graphical interface for viewing the local `vitaforge` database. MongoDB Atlas provides a hosted database when the application is deployed publicly. The committed `.env.example` shows the Atlas format; `.env.local` is ignored by Git so credentials are not published.
+
 Production check:
 
 ```bash
