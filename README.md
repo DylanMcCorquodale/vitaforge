@@ -1,71 +1,95 @@
 # VitaForge
 
-VitaForge is a Springboard capstone MVP for a holistic lifestyle dashboard. It helps users track how workouts, nutrition, sleep, hydration, mood, energy, and productivity move together over time.
+VitaForge is a full-stack wellness journal that helps users see how movement, nutrition, sleep, hydration, mood, energy, and productivity move together over time.
 
-The original proposal described a full-stack MERV/MVC application with authentication, daily logs, external nutrition/exercise APIs, and long-term progress charts. This MVP builds the core user experience and insight engine first so the product is demoable before backend integration.
+The application turns daily self-reported habits into an explainable wellness score, simple correlations, and practical recommendations. It is an educational portfolio project, not a medical device or a substitute for professional advice.
 
-## MVP Features
+## Features
 
-- Daily log form for mood, energy, productivity, sleep, water, workout minutes, calories, protein, and notes.
-- Local persistence with `localStorage`, so logs survive refreshes during the demo.
-- Dashboard metrics for averages and current streak.
-- Timeline visualization for mood, energy, productivity, workout minutes, and wellness score.
-- Correlation engine for:
-  - workout minutes to mood
-  - sleep to energy
-  - protein to productivity
-- Recommendation cards based on correlation direction and strength.
-- Mock nutrition and exercise search adapters that mirror the planned Edamam / ExerciseDB integration.
-- Tests for the core health calculations and data normalization.
+- Account registration and login with salted password hashing
+- Seven-day session tokens and protected user data
+- Create, read, update, and delete daily wellness logs
+- Persistent SQLite storage during local development
+- Netlify Function and Netlify Blobs persistence when deployed
+- Average mood, energy, productivity, sleep, protein, and streak metrics
+- Wellness timeline with editable entries
+- Correlations for workout-to-mood, sleep-to-energy, and protein-to-productivity
+- Explainable recommendation cards
+- API-backed food and exercise catalog searches
+- Responsive React interface with an unauthenticated sample-data preview
+- Unit and database integration tests
 
-## Technical Structure
+## Technology
 
-- `src/health.js`: domain logic, sample data, mock API catalogs, scoring, correlations, streaks, and insight generation.
-- `src/app.js`: UI rendering, local storage, form handling, and catalog selection.
-- `src/styles.css`: responsive dashboard styling.
-- `tests/health.test.js`: tests for averages, correlations, wellness scoring, streaks, form normalization, and search.
+- React and Vite
+- Node.js REST API
+- SQLite using Node's built-in database module
+- Netlify Functions and Netlify Blobs for deployed persistence
+- Node crypto (`scrypt`) for password hashing and random session tokens
+- CSS with responsive desktop and mobile layouts
 
-## Capstone Roadmap
+## Capstone Documentation
 
-The next production step is to move the same data model into a real MVC backend:
+- [Initial project ideas](docs/INITIAL_PROJECT_IDEAS.md)
+- [Project proposal](docs/PROJECT_PROPOSAL.md)
+- [Database model](docs/DATA_MODEL.md)
+- [API specification](docs/API_SPECIFICATION.md)
+- [Submission checklist](docs/SUBMISSION_CHECKLIST.md)
+- [Deployment guide](DEPLOY.md)
 
-- `User`: username, password hash, goals, baseline metrics.
-- `Log`: user id, date, mood, energy, productivity, sleep, hydration, notes.
-- `Workout`: user id, log id, type, duration, intensity, calories.
-- `Meal`: user id, log id, food name, calories, macros, timestamp.
+## Project Structure
 
-Backend route plan:
-
-- `POST /auth/register`
-- `POST /auth/login`
-- `GET /logs`
-- `POST /logs`
-- `PATCH /logs/:id`
-- `DELETE /logs/:id`
-- `GET /foods/search`
-- `GET /exercises/search`
-- `GET /insights`
-
-External API plan:
-
-- Edamam or USDA FoodData Central for nutrition lookup.
-- ExerciseDB or API Ninjas Exercises for movement search.
-- Server-side adapter layer to normalize external API responses before the frontend sees them.
-- Simple caching for common food and exercise searches to reduce rate-limit pressure.
+- `src/App.jsx`: React UI, authentication flow, dashboard state, and CRUD interactions
+- `src/health.js`: wellness scoring, correlations, search catalogs, and input normalization
+- `src/api.js`: authenticated API client
+- `server/database.js`: SQLite schema, authentication, sessions, and log operations
+- `server/server.js`: local REST API and production-build server
+- `netlify/functions/api.mjs`: deployed REST API using Netlify Blobs
+- `tests/health.test.js`: health-domain unit tests
+- `tests/database.test.js`: authentication and database integration tests
 
 ## Running Locally
 
+Install dependencies, build the React application, and start the API server:
+
 ```bash
+npm install
 npm test
+npm run build
 npm start
 ```
 
-Then open:
+Open `http://localhost:5177`.
+
+For frontend development, run `npm run dev` in one terminal and `npm start` in another. Vite runs at `http://localhost:5176` and proxies `/api` requests to the local API.
+
+## API Routes
 
 ```text
-http://localhost:5176
+GET    /api/health
+POST   /api/auth/register
+POST   /api/auth/login
+POST   /api/auth/logout
+GET    /api/me
+GET    /api/logs
+POST   /api/logs
+PATCH  /api/logs/:id
+DELETE /api/logs/:id
+GET    /api/insights
+GET    /api/foods/search?q=chicken
+GET    /api/exercises/search?q=run
 ```
 
-## Strong Interview / Capstone Explanation
+Protected routes require `Authorization: Bearer <token>`.
 
-"VitaForge started as a wellness dashboard capstone idea. I scoped the MVP around the most important product question: can a user see how daily habits affect mood, energy, and productivity? I separated the insight logic into testable functions, built a responsive dashboard, added local persistence for a working demo, and mocked the external nutrition/exercise adapters so the app is ready to evolve into a Node/Express/Mongo MVC backend."
+## Security and Privacy Scope
+
+- Passwords are never stored directly; local and deployed APIs store a salted `scrypt` hash.
+- Daily logs are scoped to the authenticated user.
+- Session tokens expire after seven days and can be revoked through logout.
+- Production hardening would add verified email ownership, password reset, rate limiting, secure cookies, audit logging, data export/deletion, and a formal privacy review.
+- Wellness insights describe correlations in the user's entries and do not make diagnoses.
+
+## Portfolio Explanation
+
+> VitaForge is a React and Node full-stack capstone that connects daily wellness habits with mood, energy, and productivity. I built account authentication, protected CRUD APIs, SQLite persistence, deployed Blob storage, automated tests, responsive UI, and an explainable correlation engine. The product deliberately presents patterns as personal observations rather than medical conclusions.

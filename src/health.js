@@ -215,6 +215,7 @@ export function buildInsights(logs) {
       }
     ],
     timeline: sorted.map((log) => ({
+      id: log.id,
       date: log.date,
       wellness: calculateWellnessScore(log),
       mood: Number(log.mood),
