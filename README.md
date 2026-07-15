@@ -2,6 +2,8 @@
 
 VitaForge is a full-stack wellness journal that helps users see how movement, nutrition, sleep, hydration, mood, energy, and productivity move together over time.
 
+**Live application:** [vitaforge-six.vercel.app](https://vitaforge-six.vercel.app)
+
 The application turns daily self-reported habits into an explainable wellness score, simple correlations, and practical recommendations. It is an educational portfolio project, not a medical device or a substitute for professional advice.
 
 ## Features

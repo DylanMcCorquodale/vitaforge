@@ -19,7 +19,9 @@ Reviewed against the supplied Step 6 instructions and external code-review feedb
 - [x] Confirmed `npm audit --omit=dev` reports zero vulnerabilities
 - [x] Ran the live MongoDB integration suite against MongoDB 8.0.20 using the local Compass workflow on July 14, 2026
 - [x] Verified the production app and `/api/health` endpoint return HTTP 200 with MongoDB connected
-- [ ] Deploy and verify the live application and MongoDB API
+- [x] Connected the application to a free MongoDB Atlas cluster
+- [x] Deployed [VitaForge on Vercel](https://vitaforge-six.vercel.app)
+- [x] Verified the live homepage, database health endpoint, registration, starter logs, CRUD operations, logout, and session revocation
 
 ## Required documentation
 
@@ -42,4 +44,4 @@ Reviewed against the supplied Step 6 instructions and external code-review feedb
 
 ## Remaining external requirements
 
-The implementation now matches the requested Next.js, React, and MongoDB stack, and has been verified against a live local MongoDB 8.0.20 database. Public deployment still requires a hosted MongoDB connection string. Public GitHub publishing and deployment remain intentionally paused until the project owner reviews and approves the package.
+The implementation matches the requested Next.js, React, and MongoDB stack. It has been verified against local MongoDB 8.0.20 and a free MongoDB Atlas cluster, published to GitHub, and deployed successfully on Vercel. Mentor approval and the final course-portal submission remain outstanding.
