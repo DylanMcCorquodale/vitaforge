@@ -9,15 +9,15 @@ VitaForge uses typed Next.js App Router route handlers to expose a REST-style JS
 | Method | Route | Authentication | Purpose |
 | --- | --- | --- | --- |
 | GET | `/api/health` | No | Verify API availability and identify the data store |
-| POST | `/api/auth/register` | No | Create an account, seed demonstration logs, and start a session |
+| POST | `/api/auth/register` | No | Create an account with an empty private history and start a session |
 | POST | `/api/auth/login` | No | Verify credentials and start a session |
-| POST | `/api/auth/logout` | Token | Revoke the current session |
-| GET | `/api/me` | Token | Return the authenticated public profile |
-| GET | `/api/logs` | Token | List the user's daily logs in date order |
-| POST | `/api/logs` | Token | Create a daily log |
-| PATCH | `/api/logs/:id` | Token | Update one owned daily log |
-| DELETE | `/api/logs/:id` | Token | Delete one owned daily log |
-| GET | `/api/insights` | Token | Calculate averages, timeline, streak, correlations, and recommendations |
+| POST | `/api/auth/logout` | Cookie | Revoke the current session |
+| GET | `/api/me` | Cookie | Return the authenticated public profile |
+| GET | `/api/logs` | Cookie | List the user's daily logs in date order |
+| POST | `/api/logs` | Cookie | Create a daily log |
+| PATCH | `/api/logs/:id` | Cookie | Update one owned daily log |
+| DELETE | `/api/logs/:id` | Cookie | Delete one owned daily log |
+| GET | `/api/insights` | Cookie | Calculate averages, timeline, streak, correlations, and recommendations |
 | GET | `/api/foods/search?q=` | No | Search normalized food results |
 | GET | `/api/exercises/search?q=` | No | Search normalized exercise results |
 
@@ -42,7 +42,7 @@ Successful response (`201`):
     "name": "Alex Morgan",
     "email": "alex@example.com",
     "createdAt": "2026-07-14T18:00:00.000Z"
-  },
+  }
 }
 ```
 
@@ -106,7 +106,7 @@ Errors use `{ "error": "Human-readable message" }`.
 
 ## Future API work
 
-- Secure cookie sessions, CSRF protection, rate limits, and login throttling
+- Additional CSRF defenses, rate limits, and login throttling
 - Email verification, password reset, account deletion, and data export
 - USDA and exercise-provider adapters with caching and source attribution
 - Pagination and date-range filters

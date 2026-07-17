@@ -16,4 +16,4 @@ WakeGlow would provide gradual-light alarms and reusable sleep routines. Users c
 
 ## Selection rationale
 
-VitaForge was selected because it supports a clear, personally useful workflow and demonstrates the complete course scope: Next.js and React UI, MongoDB persistence, authentication, protected CRUD APIs, external-API adapters, analytics, automated tests, responsive design, and deployment.
+VitaForge was selected because it supports a clear, personally useful workflow and demonstrates the complete course scope: Next.js and React UI, MongoDB persistence, authentication, protected CRUD APIs, curated search adapters, analytics, automated tests, responsive design, and deployment.
