@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.next/
+data/
+.netlify/
+.env*
+!.env.example
+.DS_Store
+.vercel

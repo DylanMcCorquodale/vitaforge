@@ -1,4 +1,7 @@
-export const sampleLogs = [
+import { finiteNumber, validateDailyLog } from "./validation";
+import type { DailyLog, DailyLogInput, WorkoutIntensity } from "./types";
+
+export const sampleLogs: DailyLog[] = [
   {
     date: "2026-06-17",
     mood: 6,
@@ -87,7 +90,7 @@ export const foodCatalog = [
   { name: "Steak and potatoes", calories: 780, protein: 55, carbs: 50, fat: 34 }
 ];
 
-export const exerciseCatalog = [
+export const exerciseCatalog: Array<{ name: string; type: string; minutes: number; intensity: WorkoutIntensity }> = [
   { name: "Push day strength", type: "Strength", minutes: 45, intensity: "Hard" },
   { name: "Zone 2 run", type: "Cardio", minutes: 35, intensity: "Moderate" },
   { name: "Mobility reset", type: "Recovery", minutes: 20, intensity: "Easy" },
@@ -95,21 +98,21 @@ export const exerciseCatalog = [
   { name: "Brisk walk", type: "Cardio", minutes: 30, intensity: "Easy" }
 ];
 
-export function clampScore(value) {
-  return Math.max(1, Math.min(10, Number(value)));
+export function clampScore(value: unknown) {
+  return finiteNumber(value, "Score", { min: 1, max: 10 });
 }
 
-export function average(values) {
+export function average(values: number[]) {
   if (!values.length) return 0;
   return round(values.reduce((sum, value) => sum + Number(value), 0) / values.length, 1);
 }
 
-export function round(value, digits = 2) {
+export function round(value: number, digits = 2) {
   const factor = 10 ** digits;
   return Math.round(value * factor) / factor;
 }
 
-export function pearsonCorrelation(xValues, yValues) {
+export function pearsonCorrelation(xValues: number[], yValues: number[]) {
   if (xValues.length !== yValues.length || xValues.length < 2) return 0;
   const xAvg = average(xValues);
   const yAvg = average(yValues);
@@ -120,7 +123,7 @@ export function pearsonCorrelation(xValues, yValues) {
   return round(numerator / (xSpread * ySpread), 2);
 }
 
-export function currentStreak(logs) {
+export function currentStreak(logs: DailyLog[]) {
   const sorted = [...logs].sort((a, b) => b.date.localeCompare(a.date));
   let streak = 0;
   let expected = sorted[0]?.date ? new Date(`${sorted[0].date}T12:00:00`) : null;
@@ -138,7 +141,7 @@ export function currentStreak(logs) {
   return streak;
 }
 
-export function calculateWellnessScore(log) {
+export function calculateWellnessScore(log: DailyLog) {
   const mood = clampScore(log.mood);
   const energy = clampScore(log.energy);
   const productivity = clampScore(log.productivity);
@@ -156,7 +159,7 @@ export function calculateWellnessScore(log) {
   );
 }
 
-export function buildInsights(logs) {
+export function buildInsights(logs: DailyLog[]) {
   const sorted = [...logs].sort((a, b) => a.date.localeCompare(b.date));
   const latest = sorted[sorted.length - 1];
   const wellnessScores = sorted.map(calculateWellnessScore);
@@ -215,6 +218,7 @@ export function buildInsights(logs) {
       }
     ],
     timeline: sorted.map((log) => ({
+      id: log.id,
       date: log.date,
       wellness: calculateWellnessScore(log),
       mood: Number(log.mood),
@@ -225,23 +229,11 @@ export function buildInsights(logs) {
   };
 }
 
-export function createLogFromForm(formValues) {
-  return {
-    date: formValues.date,
-    mood: clampScore(formValues.mood),
-    energy: clampScore(formValues.energy),
-    productivity: clampScore(formValues.productivity),
-    sleepHours: Math.max(0, Number(formValues.sleepHours)),
-    waterCups: Math.max(0, Number(formValues.waterCups)),
-    workoutMinutes: Math.max(0, Number(formValues.workoutMinutes)),
-    workoutIntensity: formValues.workoutIntensity,
-    calories: Math.max(0, Number(formValues.calories)),
-    protein: Math.max(0, Number(formValues.protein)),
-    notes: formValues.notes?.trim() || "No notes yet."
-  };
+export function createLogFromForm(formValues: unknown): DailyLogInput {
+  return validateDailyLog(formValues as Record<string, unknown>);
 }
 
-export function searchCatalog(items, query) {
+export function searchCatalog<T extends { name: string }>(items: T[], query: string): T[] {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return items.slice(0, 3);
   return items.filter((item) => item.name.toLowerCase().includes(normalized)).slice(0, 5);
