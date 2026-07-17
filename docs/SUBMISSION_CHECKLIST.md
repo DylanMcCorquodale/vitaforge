@@ -48,11 +48,14 @@ Reviewed against the supplied Step 6 instructions and external code-review feedb
 - [x] Completed final work on local `dev`
 - [x] Created the public VitaForge GitHub repository after owner approval
 - [x] Pushed `main` and `dev`
-- [x] Opened pull request #1 from `dev` into `main` and left it unmerged for review
+- [x] Opened pull request #1 from `dev` into `main` for mentor review
 - [x] Received mentor PR review and documented requested improvements on July 16, 2026
+- [x] Addressed all mentor review comments and pushed the verified changes to `dev`
+- [x] Merged pull request #1 into `main` following the mentor's recommendation
+- [x] Verified the Vercel production deployment from the merged `main` branch
 - [ ] Receive official grading decision
 - [ ] Click **Ready To Submit** in the course portal
 
 ## Remaining external requirements
 
-The implementation matches the requested TypeScript, Next.js, React, and MongoDB stack. Mentor review feedback has been addressed locally. The updated branch still needs to be pushed/deployed and the `main` versus unmerged-PR submission decision must be reconciled before official grading and the final course-portal action.
+The implementation matches the requested TypeScript, Next.js, React, and MongoDB stack. The reviewed changes are merged into `main` and live on Vercel. Only the official grading decision and final course-portal action remain.

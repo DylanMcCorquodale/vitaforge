@@ -68,7 +68,7 @@ Review: https://github.com/DylanMcCorquodale/vitaforge/pull/1
 
 **Comment:** Merge the fixed pull request because graders commonly clone the default `main` branch.
 
-**Status:** The fixes are complete in this package. The updated `dev` branch still needs to be pushed and merged into `main` after the project owner confirms the submission workflow.
+**Status:** Complete. The reviewed fixes were pushed to `dev`, pull request #1 was merged into `main`, and the resulting production deployment passed.
 
 ## Additional resilience improvement
 
@@ -83,7 +83,6 @@ MongoDB connection setup now clears a failed cached connection attempt. If the d
 
 ## Remaining account-level work
 
-- Push the updated branch to GitHub.
-- Merge the reviewed changes into `main` when appropriate for grading.
-- Confirm that the GitHub-connected Vercel deployment succeeds.
-- Recover Vercel 2FA only if direct access to deployment settings, environment variables, or account management is required.
+- Receive the official grading decision.
+- Complete the final course-portal submission action.
+- Recover Vercel 2FA later if direct access to deployment settings, environment variables, or account management is required.
