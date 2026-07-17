@@ -35,7 +35,7 @@ After deployment, verify:
 
 1. `/` loads the Next.js application.
 2. `/api/health` reports `{ "ok": true, "database": "mongodb" }`.
-3. A new account receives six sample daily logs.
+3. A new account starts with an empty real journal; sample logs remain confined to preview mode.
 4. A user can add, edit, and delete a log.
 5. Duplicate emails and duplicate user/date logs are rejected.
 6. Signing out revokes the session.

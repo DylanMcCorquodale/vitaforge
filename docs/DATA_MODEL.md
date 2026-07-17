@@ -64,7 +64,7 @@ Each user, session, and daily log is a separate MongoDB document. Inserts and up
 
 - A combined daily log keeps the primary workflow fast and makes correlation calculations straightforward.
 - Food and exercise catalog results are reference data, not user-owned tables. A production integration could add normalized food, meal, exercise, and workout tables.
-- Bearer sessions are used for the capstone API; MongoDB stores only their hashes. A production browser application should prefer secure, HTTP-only, same-site cookies.
+- Browser sessions use secure-in-production, HTTP-only, same-site cookies; MongoDB stores only token hashes, so injected client scripts cannot read live credentials.
 - Correlations are calculated from daily logs rather than stored, preventing stale insight records.
 
 ## Future model extensions

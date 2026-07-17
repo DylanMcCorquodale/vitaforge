@@ -20,7 +20,7 @@ Many wellness tools isolate one category, such as workouts, food, or sleep. That
 
 ## Core user flows
 
-1. A new user creates an account and receives sample entries that demonstrate the dashboard.
+1. A visitor can explore sample entries in preview mode, while a newly registered user begins with an empty private journal.
 2. A returning user signs in and sees only their own logs.
 3. The user creates, edits, or deletes a daily entry.
 4. The user searches the food or exercise catalog and applies a result to the form.

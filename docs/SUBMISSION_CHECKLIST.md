@@ -13,7 +13,16 @@ Reviewed against the supplied Step 6 instructions and external code-review feedb
 - [x] Added strict validation for missing, malformed, non-finite, and out-of-range input
 - [x] Integrated the React UI with backend data fetching and mutation
 - [x] Added responsive CSS styling
-- [x] Added domain, authentication, validation, and optional MongoDB integration tests
+- [x] Migrated application, API, and domain code to TypeScript
+- [x] Added real `/login` and `/dashboard` routes
+- [x] Split authentication and daily-log forms into reusable React components
+- [x] Replaced browser-readable localStorage tokens with httpOnly SameSite cookies
+- [x] Replaced message-regex error classification with typed 400/401/409 errors
+- [x] Kept fabricated sample entries in preview mode instead of real user histories
+- [x] Connected the dashboard to the server `/api/insights` endpoint
+- [x] Added Vitest domain, authentication, validation, component, HTTP-route, and optional MongoDB integration tests
+- [x] Required `MONGODB_TEST_DB` for live database tests
+- [x] Added the required frontend control-flow document
 - [x] Confirmed `npm test` passes without a configured database
 - [x] Confirmed `npm run build` succeeds with all Next.js routes
 - [x] Confirmed `npm audit --omit=dev` reports zero vulnerabilities
@@ -21,7 +30,7 @@ Reviewed against the supplied Step 6 instructions and external code-review feedb
 - [x] Verified the production app and `/api/health` endpoint return HTTP 200 with MongoDB connected
 - [x] Connected the application to a free MongoDB Atlas cluster
 - [x] Deployed [VitaForge on Vercel](https://vitaforge-six.vercel.app)
-- [x] Verified the live homepage, database health endpoint, registration, starter logs, CRUD operations, logout, and session revocation
+- [x] Verified the live homepage, database health endpoint, registration, CRUD operations, logout, and session revocation
 
 ## Required documentation
 
@@ -31,6 +40,7 @@ Reviewed against the supplied Step 6 instructions and external code-review feedb
 - [x] [API specification](API_SPECIFICATION.md)
 - [x] [Main README](../README.md)
 - [x] [Deployment guide](../DEPLOY.md)
+- [x] [Frontend control flow](FRONTEND_CONTROL_FLOW.md)
 
 ## Repository and submission
 
@@ -39,9 +49,10 @@ Reviewed against the supplied Step 6 instructions and external code-review feedb
 - [x] Created the public VitaForge GitHub repository after owner approval
 - [x] Pushed `main` and `dev`
 - [x] Opened pull request #1 from `dev` into `main` and left it unmerged for review
-- [ ] Obtain or document mentor approval for the idea and proposal
+- [x] Received mentor PR review and documented requested improvements on July 16, 2026
+- [ ] Receive official grading decision
 - [ ] Click **Ready To Submit** in the course portal
 
 ## Remaining external requirements
 
-The implementation matches the requested Next.js, React, and MongoDB stack. It has been verified against local MongoDB 8.0.20 and a free MongoDB Atlas cluster, published to GitHub, and deployed successfully on Vercel. Mentor approval and the final course-portal submission remain outstanding.
+The implementation matches the requested TypeScript, Next.js, React, and MongoDB stack. Mentor review feedback has been addressed locally. The updated branch still needs to be pushed/deployed and the `main` versus unmerged-PR submission decision must be reconciled before official grading and the final course-portal action.

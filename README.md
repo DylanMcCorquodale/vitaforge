@@ -8,9 +8,9 @@ The application turns daily self-reported habits into an explainable wellness sc
 
 ## Features
 
-- Next.js App Router interface and API route handlers
+- TypeScript, Next.js App Router interface, and API route handlers
 - Account registration and login with salted `scrypt` password hashing
-- Hashed, expiring, revocable session tokens
+- Hashed, expiring, revocable sessions delivered through `httpOnly`, `SameSite` cookies
 - Authenticated create, read, update, and delete operations for daily logs
 - MongoDB collections with atomic per-record writes
 - Unique email and `(userId, date)` indexes that prevent concurrency-related duplicates
@@ -18,7 +18,7 @@ The application turns daily self-reported habits into an explainable wellness sc
 - Average mood, energy, productivity, sleep, protein, and streak metrics
 - Wellness timeline with editable entries
 - Correlations for workout-to-mood, sleep-to-energy, and protein-to-productivity
-- Food and exercise search adapters
+- Food and exercise search adapters backed by curated in-repository demonstration catalogs (not a live external API)
 - Responsive React UI with an unauthenticated sample-data preview
 - Unit, authentication, validation, and optional live-MongoDB integration tests
 
@@ -37,19 +37,20 @@ The application turns daily self-reported habits into an explainable wellness sc
 - [Project proposal](docs/PROJECT_PROPOSAL.md)
 - [Database model](docs/DATA_MODEL.md)
 - [API specification](docs/API_SPECIFICATION.md)
+- [Frontend control flow](docs/FRONTEND_CONTROL_FLOW.md)
 - [Submission checklist](docs/SUBMISSION_CHECKLIST.md)
 - [Deployment guide](DEPLOY.md)
 
 ## Project Structure
 
-- `app/page.jsx`: main Next.js page
-- `app/api/**/route.js`: API route handlers
-- `src/App.jsx`: authenticated React dashboard and CRUD interactions
-- `src/health.js`: wellness scoring, correlations, streaks, and searches
-- `src/validation.js`: strict daily-log validation
-- `lib/mongodb.js`: pooled MongoDB connection and index creation
-- `lib/repository.js`: atomic account, session, and daily-log operations
-- `lib/auth.js`: password hashing, token hashing, and credential validation
+- `app/page.tsx`, `app/login/page.tsx`, `app/dashboard/page.tsx`: application routes
+- `app/api/**/route.ts`: typed API route handlers
+- `src/App.tsx` and `src/components/`: authenticated dashboard and reusable UI
+- `src/health.ts`: wellness scoring, correlations, streaks, and searches
+- `src/validation.ts`: strict daily-log validation
+- `lib/mongodb.ts`: pooled MongoDB connection and index creation
+- `lib/repository.ts`: atomic account, session, and daily-log operations
+- `lib/auth.ts`: password hashing, token hashing, and credential validation
 - `tests/`: domain, security, validation, and MongoDB integration tests
 
 ## Local Setup
@@ -66,7 +67,7 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-`npm test` always runs the health, authentication, and validation suites. The MongoDB integration suite runs automatically when `.env.local` contains `MONGODB_URI`; otherwise it reports a clear skip.
+`npm test` uses Vitest for domain, authentication, component, and HTTP-route coverage. The MongoDB integration suite runs only when both `MONGODB_URI` and a dedicated `MONGODB_TEST_DB` are configured, so tests never silently write into the application database.
 
 ### MongoDB Compass workflow
 
@@ -103,7 +104,7 @@ GET    /api/foods/search?q=chicken
 GET    /api/exercises/search?q=run
 ```
 
-Protected routes require `Authorization: Bearer <token>`.
+Protected routes use an `httpOnly`, `SameSite=Lax` session cookie. The raw token is never available to client-side JavaScript.
 
 ## Concurrency and Data Integrity
 
@@ -112,10 +113,10 @@ VitaForge does not store the whole application in one shared document. Users, se
 ## Security and Privacy Scope
 
 - Passwords are stored only as salted `scrypt` hashes.
-- Raw session tokens are returned to the client once; MongoDB stores only their SHA-256 hashes.
+- Raw session tokens exist only in protected browser cookies; MongoDB stores only their SHA-256 hashes.
 - Every log operation includes the authenticated `userId`.
 - Input validation rejects non-finite and out-of-range values before persistence.
-- A larger public release should add verified email ownership, password reset, login rate limiting, secure HTTP-only cookies, audit logs, and formal privacy controls.
+- A larger public release should add verified email ownership, password reset, login rate limiting, audit logs, and formal privacy controls.
 - Wellness insights describe correlations and do not make diagnoses.
 
 ## Portfolio Explanation

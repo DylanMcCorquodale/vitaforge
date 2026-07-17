@@ -2,7 +2,7 @@
 
 ## Overview
 
-VitaForge uses Next.js App Router route handlers to expose a REST-style JSON API backed by MongoDB. Protected routes require an `Authorization: Bearer <token>` header. MongoDB stores only a SHA-256 hash of each raw session token.
+VitaForge uses typed Next.js App Router route handlers to expose a REST-style JSON API backed by MongoDB. Protected routes use an `httpOnly`, `SameSite=Lax` session cookie. MongoDB stores only a SHA-256 hash of each raw session token.
 
 ## Endpoints
 
@@ -43,11 +43,10 @@ Successful response (`201`):
     "email": "alex@example.com",
     "createdAt": "2026-07-14T18:00:00.000Z"
   },
-  "token": "random-session-token"
 }
 ```
 
-`POST /api/auth/login` accepts `email` and `password` and returns the same response shape with status `200`. Password hashes and salts are never returned.
+`POST /api/auth/login` accepts `email` and `password` and returns the same public user shape with status `200`. Both authentication endpoints set the protected session cookie; password hashes, salts, and raw tokens are never returned in JSON.
 
 ## Daily log contract
 
@@ -97,8 +96,9 @@ The response is `{ "log": { ... } }` with generated `id`, `createdAt`, and `upda
 
 - `200`: successful read, update, delete, login, or logout
 - `201`: account or daily log created
-- `400`: invalid input, duplicate email/date, or incorrect credentials
-- `401`: missing, expired, or invalid session
+- `400`: invalid input
+- `401`: incorrect credentials or missing, expired, or invalid session
+- `409`: duplicate email or user/date record
 - `404`: owned resource or route not found
 - `500`: unexpected local server failure
 

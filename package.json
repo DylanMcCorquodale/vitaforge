@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "test": "node tests/health.test.js && node tests/auth-validation.test.js && node --env-file-if-exists=.env.local tests/mongodb.integration.test.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "start": "next start"
   },
   "dependencies": {
@@ -14,6 +15,16 @@
     "next": "16.2.10",
     "react": "19.2.0",
     "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.1",
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "jsdom": "27.2.0",
+    "typescript": "5.9.3",
+    "vitest": "4.1.10"
   },
   "overrides": {
     "postcss": "8.5.10"
